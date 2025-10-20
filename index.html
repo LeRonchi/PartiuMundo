@@ -1,0 +1,349 @@
+<!-- Chosen Palette: Futuristic Indigo (Dark theme with Indigo/Purple accents) -->
+<!-- Application Structure Plan: A single-page, top-to-bottom narrative structure was chosen to guide the user logically through the business concept. It starts with the core value proposition (Hero), explains the unique process (How It Works), showcases the product variety (Purposes), details the business model (Plans), builds trust with social proof (Past Journeys & FAQ), and culminates in an interactive simulation of the core technology (AI Chat Modal). This flow is designed to answer user questions progressively and build excitement, making it more effective than a simple dashboard for a conceptual product. -->
+<!-- Visualization & Content Choices: Report Info: AI-driven profiling -> Goal: Demonstrate the interactive, user-friendly profiling process -> Viz/Presentation: Simulated Chat Modal -> Interaction: User clicks predefined options to advance a scripted conversation -> Justification: Shows the core innovation in an engaging way, rather than just describing it. Library/Method: Vanilla JS. Report Info: Business Process (Chat, Box, Reveal, Adventure) -> Goal: Clearly explain the user journey -> Viz/Presentation: 4-step icon-based diagram -> Interaction: Hover effects on each step -> Justification: Simplifies a novel concept into easily digestible steps. Library/Method: HTML/Tailwind. Report Info: Freemium Model -> Goal: Present pricing options -> Viz/Presentation: Side-by-side comparison cards -> Interaction: CTA buttons on each card -> Justification: Classic, effective UI pattern for comparing product tiers. Library/Method: HTML/Tailwind. -->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PartiuMundo - Sua Próxima Aventura é uma Surpresa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #030712; 
+            color: #f9fafb;
+        }
+        .hero-bg {
+            background-image: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+        .section-glow {
+            box-shadow: 0 0 60px rgba(79, 70, 229, 0.15);
+        }
+        .chat-modal-overlay {
+            transition: opacity 0.3s ease-in-out;
+        }
+        .chat-modal-container {
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+        .chat-bubble-received {
+            animation: slide-in 0.5s ease-out forwards;
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+        .chat-bubble-sent {
+            animation: slide-in-right 0.5s ease-out forwards;
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        .options-fade-in {
+            animation: fade-in 0.5s 0.5s ease-out forwards;
+            opacity: 0;
+        }
+        @keyframes slide-in { to { transform: translateX(0); opacity: 1; } }
+        @keyframes slide-in-right { to { transform: translateX(0); opacity: 1; } }
+        @keyframes fade-in { to { opacity: 1; } }
+        .faq-answer {
+            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+
+    <header class="fixed top-0 left-0 right-0 z-40 bg-gray-900/80 backdrop-blur-sm">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-white tracking-wider">PartiuMundo</h1>
+            <nav class="hidden md:flex space-x-6">
+                <a href="#como-funciona" class="hover:text-indigo-400 transition-colors">Como Funciona</a>
+                <a href="#propositos" class="hover:text-indigo-400 transition-colors">Propósitos</a>
+                <a href="#planos" class="hover:text-indigo-400 transition-colors">Planos</a>
+                <a href="#clientes" class="hover:text-indigo-400 transition-colors">Clientes</a>
+                <a href="#faq" class="hover:text-indigo-400 transition-colors">FAQ</a>
+            </nav>
+            <button class="start-chat-btn bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2 px-4 rounded-lg transition-transform duration-300 hover:scale-105">Começar Agora</button>
+        </div>
+    </header>
+
+    <main class="pt-16">
+        <section class="hero-bg min-h-screen flex items-center justify-center text-center text-white">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl md:text-6xl font-bold leading-tight mb-4">Cansado de planejar?</h2>
+                <p class="text-xl md:text-2xl font-light mb-8 max-w-3xl mx-auto">Descubra sua próxima <span class="font-semibold text-indigo-300">experiência</span>, não apenas seu próximo destino.</p>
+                <button class="start-chat-btn bg-white text-indigo-700 font-bold py-3 px-8 rounded-full text-lg hover:bg-gray-200 transition-transform duration-300 hover:scale-105 transform">Converse com nossa IA Curadora</button>
+            </div>
+        </section>
+
+        <section id="como-funciona" class="py-20 bg-gray-900">
+            <div class="container mx-auto px-6 text-center">
+                <h3 class="text-3xl font-bold mb-2">Sua Jornada Começa com um "Olá"</h3>
+                <p class="text-gray-400 mb-12">Em 4 passos simples, transformamos a incerteza em sua melhor aventura.</p>
+                <div class="grid md:grid-cols-4 gap-10">
+                    <div class="bg-gray-800 p-8 rounded-xl border border-gray-700 hover:border-indigo-500 transition-all duration-300 transform hover:-translate-y-2">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-indigo-600 mx-auto mb-4"><i data-lucide="message-circle" class="h-8 w-8 text-white"></i></div>
+                        <h4 class="text-xl font-semibold mb-2">1. Converse com a IA</h4>
+                        <p class="text-gray-400">Nosso chatbot divertido e intuitivo descobre seu perfil de viajante sem formulários chatos.</p>
+                    </div>
+                    <div class="bg-gray-800 p-8 rounded-xl border border-gray-700 hover:border-indigo-500 transition-all duration-300 transform hover:-translate-y-2">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-indigo-600 mx-auto mb-4"><i data-lucide="box" class="h-8 w-8 text-white"></i></div>
+                        <h4 class="text-xl font-semibold mb-2">2. Receba sua Caixa</h4>
+                        <p class="text-gray-400">Uma caixa física chega com charadas e itens sensoriais que dão pistas sobre a sua viagem.</p>
+                    </div>
+                    <div class="bg-gray-800 p-8 rounded-xl border border-gray-700 hover:border-indigo-500 transition-all duration-300 transform hover:-translate-y-2">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-indigo-600 mx-auto mb-4"><i data-lucide="scan-line" class="h-8 w-8 text-white"></i></div>
+                        <h4 class="text-xl font-semibold mb-2">3. Revele a Jornada</h4>
+                        <p class="text-gray-400">Escaneie um token da caixa com nosso app para, finalmente, revelar seu destino.</p>
+                    </div>
+                    <div class="bg-gray-800 p-8 rounded-xl border border-gray-700 hover:border-indigo-500 transition-all duration-300 transform hover:-translate-y-2">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-indigo-600 mx-auto mb-4"><i data-lucide="map" class="h-8 w-8 text-white"></i></div>
+                        <h4 class="text-xl font-semibold mb-2">4. Viva a Aventura</h4>
+                        <p class="text-gray-400">Siga um roteiro flexível com sugestões baseadas no seu humor e no que acontece ao seu redor.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="propositos" class="py-20 bg-gray-800 section-glow">
+            <div class="container mx-auto px-6">
+                <h3 class="text-3xl font-bold text-center mb-12">Qual é o seu propósito?</h3>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="relative rounded-xl overflow-hidden group h-80"><img src="https://images.unsplash.com/photo-1505238680356-667803448bb6?q=80&w=1974&auto=format&fit=crop" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Homem com notebook em uma rede na praia"><div class="absolute inset-0 bg-black/60 flex items-end p-6"><h4 class="text-2xl font-bold text-white">Desconexão Digital</h4></div></div>
+                    <div class="relative rounded-xl overflow-hidden group h-80"><img src="https://images.unsplash.com/photo-1547891654-e66ed7ebb968?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Ateliê de pintura"><div class="absolute inset-0 bg-black/60 flex items-end p-6"><h4 class="text-2xl font-bold text-white">Imersão Artística</h4></div></div>
+                    <div class="relative rounded-xl overflow-hidden group h-80"><img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1974&auto=format&fit=crop" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Prato gourmet sendo preparado"><div class="absolute inset-0 bg-black/60 flex items-end p-6"><h4 class="text-2xl font-bold text-white">Aventura Gastronômica</h4></div></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="planos" class="py-20 bg-gray-900">
+             <div class="container mx-auto px-6 text-center">
+                <h3 class="text-3xl font-bold mb-12">Escolha seu ponto de partida</h3>
+                <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
+                     <div class="bg-gray-800 p-8 rounded-xl border border-gray-700 flex flex-col"><h4 class="text-2xl font-semibold mb-2">Pacote Básico Surpresa</h4><p class="text-gray-400 mb-6">A emoção da surpresa com o fundamental.</p><ul class="text-left space-y-3 text-gray-300 mb-8 flex-grow"><li class="flex items-center"><i data-lucide="check" class="h-5 w-5 mr-2 text-green-400"></i>Destino e hospedagem surpresa</li><li class="flex items-center"><i data-lucide="check" class="h-5 w-5 mr-2 text-green-400"></i>Perfil traçado por IA</li><li class="flex items-center"><i data-lucide="check" class="h-5 w-5 mr-2 text-green-400"></i>Roteiro com sugestões flexíveis</li></ul><button class="start-chat-btn mt-auto w-full bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors">Começar a Conversa</button></div>
+                     <div class="bg-indigo-900/30 p-8 rounded-xl border border-indigo-500 flex flex-col ring-2 ring-indigo-500 relative"><span class="absolute -top-3 right-4 bg-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full">MAIS POPULAR</span><h4 class="text-2xl font-semibold mb-2">Experiência Premium</h4><p class="text-indigo-300 mb-6">Personalize sua surpresa e eleve a aventura.</p><ul class="text-left space-y-3 text-gray-300 mb-8 flex-grow"><li class="font-bold text-white">Tudo do pacote Básico, e mais:</li><li class="flex items-center"><i data-lucide="plus" class="h-5 w-5 mr-2 text-indigo-400"></i>Exclua tipos de destinos que não deseja</li><li class="flex items-center"><i data-lucide="plus" class="h-5 w-5 mr-2 text-indigo-400"></i>Upgrade para experiências surpresa</li><li class="flex items-center"><i data-lucide="plus" class="h-5 w-5 mr-2 text-indigo-400"></i>Presente especial no destino</li></ul><button class="start-chat-btn mt-auto w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 px-6 rounded-lg transition-colors">Turbinar e Conversar</button></div>
+                </div>
+             </div>
+        </section>
+
+        <section id="clientes" class="py-20 bg-gray-800 section-glow">
+            <div class="container mx-auto px-6">
+                <h3 class="text-3xl font-bold text-center mb-4">Jornadas Inesquecíveis</h3>
+                <p class="text-gray-400 text-center mb-12">Veja o que nossos aventureiros revelaram.</p>
+                <div class="grid md:grid-cols-3 sm:grid-cols-2 gap-4 md:gap-8">
+                    <!-- Viagem 1 -->
+                    <div class="relative rounded-xl overflow-hidden group h-96">
+                        <img src="/assets/Imagem1.jpg" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Torre Eiffel em Paris, França">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            <h4 class="text-2xl font-bold text-white">Paris, França</h4>
+                            <p class="text-gray-300 text-sm mt-1">"Amei a surpresa de Paris! Cada rua, uma história. Simplesmente mágico."</p>
+                        </div>
+                    </div>
+                    <!-- Viagem 2 -->
+                    <div class="relative rounded-xl overflow-hidden group h-96">
+                        <img src="/assets/Imagem2.jpg" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Templo no Japão durante a florada de cerejeiras">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            <h4 class="text-2xl font-bold text-white">Quioto, Japão</h4>
+                            <p class="text-gray-300 text-sm mt-1">"A imersão cultural foi espetacular. O Japão me surpreendeu em cada esquina!"</p>
+                        </div>
+                    </div>
+                    <!-- Viagem 3 -->
+                    <div class="relative rounded-xl overflow-hidden group h-96">
+                        <img src="/assets/Imagem3.jpg" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Pontos turísticos de Londres">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            <h4 class="text-2xl font-bold text-white">Londres, Inglaterra</h4>
+                            <p class="text-gray-300 text-sm mt-1">"Uma cidade vibrante e cheia de história. Amei cada recomendação da IA."</p>
+                        </div>
+                    </div>
+                    <!-- Viagem 4 -->
+                    <div class="relative rounded-xl overflow-hidden group h-96">
+                        <img src="/assets/Imagem5.jpg" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Safari na África com elefantes">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            <h4 class="text-2xl font-bold text-white">Safari, Quênia</h4>
+                            <p class="text-gray-300 text-sm mt-1">"A aventura na África foi de tirar o fôlego! Experiência inesquecível!"</p>
+                        </div>
+                    </div>
+                    <!-- Viagem 5 -->
+                    <div class="relative rounded-xl overflow-hidden group h-96 md:col-start-2 sm:col-start-auto">
+                        <img src="/assets/Imagem4.jpg" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Cidade colorida no México com chapéu de sombrilla">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            <h4 class="text-2xl font-bold text-white">Guanajuato, México</h4>
+                            <p class="text-gray-300 text-sm mt-1">"Cores, sabores e uma cultura vibrante! O México me conquistou de primeira."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq" class="py-20 bg-gray-900">
+            <div class="container mx-auto px-6">
+                <h3 class="text-3xl font-bold text-center mb-12">Perguntas Frequentes</h3>
+                <div class="max-w-3xl mx-auto text-left space-y-4">
+                    <div class="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden"><button class="faq-question w-full flex justify-between items-center p-6 text-lg font-semibold text-left text-white"><span>Como a IA sabe para onde me enviar?</span><i data-lucide="chevron-down" class="w-5 h-5 transition-transform duration-300 flex-shrink-0"></i></button><div class="faq-answer max-h-0 overflow-hidden"><p class="px-6 pb-6 text-gray-400">Nossa IA Curadora não foca no "onde", mas no "porquê". Através da nossa conversa, ela entende o tipo de experiência que você busca: aventura, relaxamento, cultura, etc. Com base no seu perfil, ela cruza milhares de dados sobre destinos e atividades para criar uma jornada com a sua cara, em um lugar que talvez você nunca pensasse em ir!</p></div></div>
+                    <div class="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden"><button class="faq-question w-full flex justify-between items-center p-6 text-lg font-semibold text-left text-white"><span>E se eu não gostar do destino surpresa?</span><i data-lucide="chevron-down" class="w-5 h-5 transition-transform duration-300 flex-shrink-0"></i></button><div class="faq-answer max-h-0 overflow-hidden"><p class="px-6 pb-6 text-gray-400">A beleza da PartiuMundo está na experiência, não apenas no local. O roteiro é focado em atividades que correspondem ao seu perfil. Além disso, nosso pacote Premium oferece a opção de excluir tipos de destinos (ex: "não quero praia"), o que aumenta muito a chance de acertarmos. O objetivo é te surpreender com uma experiência incrível, e o destino é o palco para isso.</p></div></div>
+                    <div class="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden"><button class="faq-question w-full flex justify-between items-center p-6 text-lg font-semibold text-left text-white"><span>Com quanta antecedência preciso agendar?</span><i data-lucide="chevron-down" class="w-5 h-5 transition-transform duration-300 flex-shrink-0"></i></button><div class="faq-answer max-h-0 overflow-hidden"><p class="px-6 pb-6 text-gray-400">Recomendamos um mínimo de 30 dias de antecedência para garantir as melhores opções de logística e experiências. No entanto, nossa rede de parceiros nos permite, ocasionalmente, preparar viagens com prazos menores. Entre em contato pelo chat e veremos o que é possível!</p></div></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 border-t border-gray-700">
+        <div class="container mx-auto px-6 py-10 text-center"><h3 class="text-2xl font-bold mb-4">Pronto para a surpresa?</h3><p class="text-gray-400 mb-8">Sua próxima grande história está a uma conversa de distância.</p><button class="start-chat-btn bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-8 rounded-full text-lg transition-transform duration-300 hover:scale-105 transform">Começar Minha Jornada Agora</button><div class="mt-10 flex justify-center space-x-6"><a href="#" class="text-gray-500 hover:text-white"><i data-lucide="instagram"></i></a><a href="#" class="text-gray-500 hover:text-white"><i data-lucide="twitter"></i></a><a href="#" class="text-gray-500 hover:text-white"><i data-lucide="facebook"></i></a></div><p class="mt-8 text-gray-600 text-sm">&copy; 2025 PartiuMundo. Um projeto acadêmico.</p></div>
+    </footer>
+
+    <div id="chat-modal" class="chat-modal-overlay fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden opacity-0">
+        <div class="chat-modal-container w-full max-w-md mx-auto bg-gray-900 rounded-3xl shadow-2xl overflow-hidden border border-gray-700 flex flex-col h-[90vh] max-h-[700px] opacity-0 translate-y-8">
+            <div class="bg-gray-800 p-4 flex items-center shadow-md border-b border-gray-700 flex-shrink-0"><div class="relative"><img src="https://placehold.co/40x40/7c3aed/ffffff?text=AI" class="rounded-full" alt="Avatar da IA"><span class="absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full bg-green-400 ring-2 ring-gray-800"></span></div><div class="ml-3 flex-1"><p class="text-white font-semibold">IA Curadora</p><p class="text-green-400 text-xs">Online</p></div><button id="close-chat-btn" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-6 h-6"></i></button></div>
+            <div id="chat-window" class="flex-1 p-6 space-y-4 overflow-y-auto"></div>
+            <div id="input-area" class="p-4 bg-gray-800 border-t border-gray-700 flex-shrink-0"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            const chatModal = document.getElementById('chat-modal');
+            const chatContainer = document.querySelector('.chat-modal-container');
+            const startChatBtns = document.querySelectorAll('.start-chat-btn');
+            const closeChatBtn = document.getElementById('close-chat-btn');
+            const chatWindow = document.getElementById('chat-window');
+            const inputArea = document.getElementById('input-area');
+
+            const openChat = () => {
+                chatModal.classList.remove('hidden');
+                setTimeout(() => {
+                    chatModal.classList.remove('opacity-0');
+                    chatContainer.classList.remove('opacity-0', 'translate-y-8');
+                    startConversation();
+                }, 10);
+            };
+
+            const closeChat = () => {
+                chatModal.classList.add('opacity-0');
+                chatContainer.classList.add('opacity-0', 'translate-y-8');
+                setTimeout(() => {
+                    chatModal.classList.add('hidden');
+                    resetConversation();
+                }, 300);
+            };
+
+            startChatBtns.forEach(btn => btn.addEventListener('click', openChat));
+            closeChatBtn.addEventListener('click', closeChat);
+            chatModal.addEventListener('click', (e) => e.target === chatModal && closeChat());
+
+            const conversationFlow = [
+                { sender: 'ai', text: 'Olá! 👋 Sou sua IA Curadora, pronta para desenhar sua próxima viagem inesquecível.' },
+                { sender: 'ai', text: 'Se seu fim de semana perfeito fosse um gênero de filme, qual seria?', options: ['Aventura épica', 'Comédia romântica', 'Documentário cultural', 'Suspense e mistério'] },
+                { sender: 'user' },
+                { sender: 'ai', text: 'Ótima escolha! Adorei a energia.' },
+                { sender: 'ai', text: 'E qual o ritmo ideal para essa viagem?', options: ['A mil por hora!', 'Equilíbrio, por favor', 'Totalmente relax'] },
+                { sender: 'user' },
+                { sender: 'ai', text: 'Entendido. E sobre comida, você prefere:', options: ['Sabores locais de rua', 'Restaurantes renomados', 'Cozinhar com ingredientes frescos'] },
+                { sender: 'user' },
+                { sender: 'ai', text: 'Perfeito! Tenho tudo que preciso. Minha IA já está criando algo único... ✨' },
+                { sender: 'ai', text: 'Prepare-se para a surpresa! Sua "Caixa de Experiência" será preparada em breve.' }
+            ];
+
+            let currentStep = 0;
+            let conversationInProgress = false;
+
+            const resetConversation = () => {
+                currentStep = 0;
+                chatWindow.innerHTML = '';
+                inputArea.innerHTML = '';
+                conversationInProgress = false;
+            };
+            
+            async function startConversation() {
+                if (conversationInProgress) return;
+                conversationInProgress = true;
+                resetConversation();
+                await runConversationStep();
+            }
+
+            async function runConversationStep() {
+                if (currentStep >= conversationFlow.length) {
+                    conversationInProgress = false;
+                    inputArea.innerHTML = `<p class="text-center text-sm text-green-400 p-4">Perfil criado! Entraremos em contato.</p>`;
+                    return;
+                }
+                const message = conversationFlow[currentStep];
+                if (message.sender === 'ai') {
+                    await displayMessage(message);
+                    currentStep++;
+                    if (!message.options) await runConversationStep();
+                }
+            }
+
+            const displayMessage = (message) => new Promise(resolve => {
+                setTimeout(() => {
+                    const bubble = document.createElement('div');
+                    bubble.className = 'flex max-w-xs md:max-w-sm chat-bubble-received';
+                    bubble.innerHTML = `<img src="https://placehold.co/32x32/7c3aed/ffffff?text=AI" class="rounded-full h-8 w-8 flex-shrink-0 mt-1" alt="IA"><div class="ml-3 p-3 bg-gray-700 rounded-2xl rounded-bl-none"><p class="text-sm text-gray-200">${message.text}</p></div>`;
+                    chatWindow.appendChild(bubble);
+                    chatWindow.scrollTop = chatWindow.scrollHeight;
+                    if (message.options) displayOptions(message.options);
+                    resolve();
+                }, message.text.length > 50 ? 1500 : 1000);
+            });
+            
+            const displayUserMessage = (text) => {
+                 const bubble = document.createElement('div');
+                 bubble.className = 'flex justify-end chat-bubble-sent';
+                 bubble.innerHTML = `<div class="p-3 bg-indigo-600 rounded-2xl rounded-br-none max-w-xs md:max-w-sm"><p class="text-sm text-white">${text}</p></div>`;
+                chatWindow.appendChild(bubble);
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+            };
+
+            const displayOptions = (options) => {
+                inputArea.innerHTML = '';
+                const container = document.createElement('div');
+                container.className = 'flex flex-wrap justify-center gap-2 options-fade-in p-2';
+                options.forEach(optionText => {
+                    const button = document.createElement('button');
+                    button.textContent = optionText;
+                    button.className = 'flex-grow text-sm text-white bg-gray-700 py-3 px-3 rounded-xl hover:bg-indigo-600 transition-colors duration-200 text-center';
+                    button.style.flexBasis = `calc(${100 / (options.length > 2 ? 2 : options.length)}% - 8px)`;
+                    button.onclick = () => selectOption(optionText);
+                    container.appendChild(button);
+                });
+                inputArea.appendChild(container);
+            };
+
+            async function selectOption(text) {
+                displayUserMessage(text);
+                inputArea.innerHTML = `<div class="flex items-center justify-center text-gray-500 text-sm animate-pulse p-4"><i data-lucide="bot" class="w-4 h-4 mr-2"></i><span>IA Curadora está pensando...</span></div>`;
+                lucide.createIcons();
+                currentStep++;
+                await runConversationStep();
+            }
+            
+            const faqQuestions = document.querySelectorAll('.faq-question');
+            faqQuestions.forEach(question => {
+                question.addEventListener('click', () => {
+                    const answer = question.nextElementSibling;
+                    const icon = question.querySelector('i');
+                    const isExpanded = answer.style.maxHeight;
+
+                    faqQuestions.forEach(otherQuestion => {
+                        otherQuestion.nextElementSibling.style.maxHeight = null;
+                        otherQuestion.querySelector('i').classList.remove('rotate-180');
+                    });
+
+                    if (!isExpanded) {
+                        answer.style.maxHeight = answer.scrollHeight + "px";
+                        icon.classList.add('rotate-180');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
